@@ -1,3 +1,6 @@
+## Docker Build and Push Stage
+## replace  siddharth67 with your dockerhub username
+
 pipeline {
   agent any
 
@@ -22,13 +25,13 @@ pipeline {
       }
     }
 
-    stage('Docker image build and push') {
+    stage('Docker Build and Push') {
       steps {
         withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
-        sh 'printenv'  
-        sh 'docker build -t docker-registry:5000/java-app:latest .'
-        sh 'docker push docker-registry:5000/java-app:latest'
-      }
+          sh 'printenv'
+          sh 'docker build -t sorydiallo89/numeric-app:""$GIT_COMMIT"" .'
+          sh 'docker push sorydiallo89/numeric-app:""$GIT_COMMIT""'
+        }
       }
     }
   }
