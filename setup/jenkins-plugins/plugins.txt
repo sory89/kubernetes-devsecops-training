@@ -1,0 +1,9 @@
+performance
+docker-workflow
+dependency-check-jenkins-plugin
+blueocean
+jacoco
+slack
+sonar
+pitmutation
+kubernetes-cli
