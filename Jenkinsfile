@@ -24,8 +24,11 @@ pipeline {
 
     stage('Docker image build and push') {
       steps {
+        withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
+        sh 'printenv'  
         sh 'docker build -t docker-registry:5000/java-app:latest .'
         sh 'docker push docker-registry:5000/java-app:latest'
+      }
       }
     }
   }
