@@ -1,6 +1,3 @@
-## Docker Build and Push Stage
-## replace  sorydiallo89 with your dockerhub username
-
 pipeline {
   agent any
 
