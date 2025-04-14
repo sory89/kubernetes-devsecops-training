@@ -16,7 +16,7 @@ spec:
         app: devsecops
     spec:
       containers:
-      - image: replace
+      - image: sorydiallo89/numeric-app:6d238ae6f68f97b5b54f8eb4afd740c133927d84
         name: devsecops-container
 ---
 apiVersion: v1
