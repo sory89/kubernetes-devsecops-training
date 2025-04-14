@@ -32,17 +32,15 @@ pipeline {
       }
     }
    
-    stages {
-     stage('Deploy') {
-      steps {
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-          sh '''
-            sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:6d238ae6f68f97b5b54f8eb4afd740c133927d84#g' k8s_deployment_service.yaml
-            kubectl apply -f k8s_deployment_service.yaml
-          '''
+   stage('Deploy') {
+    steps {
+       withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+         sh '''
+           sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:6d238ae6f68f97b5b54f8eb4afd740c133927d84#g' k8s_deployment_service.yaml
+           kubectl apply -f k8s_deployment_service.yaml
+        '''
         }
-      }
-    }
-    }
+     }
+   }
   }
 }
