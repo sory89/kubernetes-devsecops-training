@@ -37,7 +37,7 @@ pipeline {
        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
          sh '''
            sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml
-           kubectl apply -f k8s_deployment_service.yaml
+           sudo -u vagrant kubectl apply -f k8s_deployment_service.yaml
         '''
         }
      }
