@@ -34,7 +34,7 @@ pipeline {
 
     stage('Kubernetes Deployment - DEV') {
       steps {
-        sh "eval $(minikube docker-env)"
+        sh '''eval $(minikube docker-env)'''
         sh "sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:latest#g' k8s_deployment_service.yaml"
         sh "kubectl apply --dry-run=client -f k8s_deployment_service.yaml"
       }
