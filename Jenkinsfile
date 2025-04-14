@@ -35,7 +35,7 @@ pipeline {
     stage('Kubernetes Deployment - DEV') {
       steps {
         sh "sed -i 's#REPLACE_ME#sorydiallo89:5000/numeric-app:latest#g' k8s_deployment_service.yaml"
-        sh "kubectl apply -f k8s_deployment_service.yaml"
+        sh "kubectl apply --dry-run=client -f k8s_deployment_service.yaml"
       }
     }
   }
