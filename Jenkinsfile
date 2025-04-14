@@ -31,21 +31,18 @@ pipeline {
         }
       }
     }
-   stage('Deploying App to Kubernetes') {
+   
+    stages {
+     stage('Deploy') {
       steps {
-        script {
-          kubernetesDeploy(configs: "k8s_deployment_service.yaml", kubeconfigId: "kubeconfig")
-        }
-    }
-   }
-    
-    stage('Kubernetes Deployment - DEV') {
-      steps {
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh "sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
-        sh "kubectl apply --dry-run=client -f k8s_deployment_service.yaml"
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+          sh '''
+            sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:6d238ae6f68f97b5b54f8eb4afd740c133927d84#g' k8s_deployment_service.yaml
+            kubectl apply -f k8s_deployment_service.yaml
+          '''
         }
       }
     }
+   }
   }
 }
