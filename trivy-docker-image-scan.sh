@@ -1,5 +1,3 @@
-## trivy-docker-image-scan.sh
-
 #!/bin/bash
 
 dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
