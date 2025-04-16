@@ -16,8 +16,10 @@ spec:
         app: devsecops
     spec:
       containers:
-      - image: sorydiallo89/numeric-app:6d238ae6f68f97b5b54f8eb4afd740c133927d84
+      - image: replqce
         name: devsecops-container
+        securityContext:
+          runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Service
