@@ -1,6 +1,14 @@
 pipeline {
   agent any
 
+  environment {
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "sorydiallo89/numeric-app:${GIT_COMMIT}"
+    applicationURL = "http://192.168.100.200/"
+    applicationURI = "/increment/99"
+  }
   stages {
 
     stage('Build Artifact - Maven') {
@@ -78,16 +86,23 @@ pipeline {
       }
     }
     
-   stage('Deploy on Kubernetes') {
-    steps {
-       withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-         sh '''
-           sed -i 's#REPLACE_ME#sorydiallo89/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml
-           sudo -u vagrant kubectl apply -f k8s_deployment_service.yaml
-        '''
-        }
-     }
-   }
+    stage('K8S Deployment - DEV') {
+      steps {
+        parallel(
+          "Deployment": {
+            withKubeConfig([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+              sh "bash k8s-deployment.sh"
+            }
+          },
+          "Rollout Status": {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "bash k8s-deployment-rollout-status.sh"
+            }
+          }
+        )
+      }
+    }
+
   }
 
   post {
@@ -106,5 +121,5 @@ pipeline {
 
     // }
   }
- }
 
+}
