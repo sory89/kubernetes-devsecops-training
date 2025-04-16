@@ -71,7 +71,13 @@ pipeline {
         }
       }
     }
-   
+
+   stage('Vulnerability Scan - Kubernetes') {
+      steps {
+        sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+      }
+    }
+    
    stage('Deploy on Kubernetes') {
     steps {
        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
@@ -83,5 +89,22 @@ pipeline {
      }
    }
   }
-}
+
+  post {
+    always {
+      junit 'target/surefire-reports/*.xml'
+      jacoco execPattern: 'target/jacoco.exec'
+      pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+    }
+
+    // success {
+
+    // }
+
+    // failure {
+
+    // }
+  }
+ }
 
