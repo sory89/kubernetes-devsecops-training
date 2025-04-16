@@ -3,8 +3,8 @@
 dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
 echo $dockerImageName
 
-docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:latest -q image --exit-code 0 --severity HIGH $dockerImageName
-docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:latest -q image --exit-code 1 --severity CRITICAL $dockerImageName
+docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.60.0 -q image --exit-code 0 --severity HIGH $dockerImageName
+docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.60.0 -q image --exit-code 1 --severity CRITICAL $dockerImageName
 
 # Trivy scan result processing
 exit_code=$?
